@@ -69,6 +69,7 @@ export function FileUploader({ apiUrl, apiRedir  }: { apiUrl: string; apiRedir: 
                             console.warn("Total file size is undefined in progress event.");
                         }
                     },
+                    headers: { "Content-Type": "multipart/form-data" },
                 })
                 .then((response) => {
                     if(response.status === 201) {
