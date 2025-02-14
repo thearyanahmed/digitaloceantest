@@ -8,6 +8,7 @@ export const config = {
   
 
 export async function POST(request: NextRequest) {
+    console.log(request.headers)
     console.log("---------- HERE it comes: -------------------")
     try {
         const formData = await request.formData();
