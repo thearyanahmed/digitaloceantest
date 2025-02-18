@@ -4,15 +4,28 @@ import path from "path";
 import { randomUUID } from "crypto";
 
 export async function POST(request: NextRequest) {
+
+  console.log("request start")
+
   if (!request.headers.get("content-type")?.includes("multipart/form-data")) {
+    console.log("not proper content type")
     return NextResponse.json({ error: "Invalid content type" }, { status: 400 });
   }
 
   try {
+    let headerSize = 0;
+    request.headers.forEach((value, key) => {
+      headerSize += Buffer.byteLength(key) + Buffer.byteLength(value);
+    });
+
+    console.log("header size: ", (headerSize / 1024).toFixed(2))
+
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
     if (!file) {
+      console.log("file is empty")
+
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
@@ -30,8 +43,13 @@ export async function POST(request: NextRequest) {
     await writeFile(filePath, buffer);
 
     return NextResponse.json(
-      { message: "File uploaded successfully", fileName: uniqueName },
-      { status: 201 }
+      {
+        message: "File uploaded successfully", fileName: uniqueName,
+
+        headerSizeKB: (headerSize / 1024).toFixed(2), // Convert to KB and round to 2 decimal places
+      },
+      { status: 201 },
+
     );
   } catch (error) {
     console.error("Upload error:", error);
