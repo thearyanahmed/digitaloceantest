@@ -3,6 +3,13 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 
+export const config = {
+  api: {
+    bodyParser: false,
+    size: '10mb', // Set the maximum body size to 10MB (adjust as needed)
+  },
+};
+
 export async function POST(request: NextRequest) {
 
   console.log("request start")
