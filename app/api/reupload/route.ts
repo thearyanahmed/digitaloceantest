@@ -5,9 +5,10 @@ import { randomUUID } from "crypto";
 
 export const config = {
   api: {
-    bodyParser: false,
-    size: '10mb', // Set the maximum body size to 10MB (adjust as needed)
-  },
+    bodyParser: {
+      sizeLimit: '15mb' // Set desired value here
+    }
+  }
 };
 
 export async function POST(request: NextRequest) {
